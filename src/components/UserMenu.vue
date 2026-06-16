@@ -25,10 +25,10 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
     alt: user.value?.name
   }
 }], [{
-  label: '主题',
+  label: 'Theme',
   icon: 'i-lucide-palette',
   children: [{
-    label: '主色',
+    label: 'Primary',
     slot: 'chip',
     chip: appConfig.ui.colors.primary,
     content: {
@@ -48,7 +48,7 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
       }
     }))
   }, {
-    label: '中性色',
+    label: 'Neutral',
     slot: 'chip',
     chip: appConfig.ui.colors.neutral === 'neutral' ? 'old-neutral' : appConfig.ui.colors.neutral,
     content: {
@@ -69,10 +69,10 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
     }))
   }]
 }, {
-  label: '外观',
+  label: 'Appearance',
   icon: 'i-lucide-sun-moon',
   children: [{
-    label: '浅色',
+    label: 'Light',
     icon: 'i-lucide-sun',
     type: 'checkbox',
     checked: colorMode.value === 'light',
@@ -82,7 +82,7 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
       colorMode.value = 'light'
     }
   }, {
-    label: '深色',
+    label: 'Dark',
     icon: 'i-lucide-moon',
     type: 'checkbox',
     checked: colorMode.value === 'dark',
@@ -96,7 +96,7 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
     }
   }]
 }], [{
-  label: '模板',
+  label: 'Templates',
   icon: 'i-lucide-layout-template',
   children: [{
     label: 'Starter',
@@ -112,17 +112,17 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
     type: 'checkbox'
   }]
 }], [{
-  label: '文档',
+  label: 'Docs',
   icon: 'i-lucide-book-open',
   to: 'https://ui.nuxt.com/docs/getting-started/installation/vue',
   target: '_blank'
 }, {
-  label: 'GitHub 仓库',
+  label: 'GitHub Repo',
   icon: 'i-simple-icons:github',
   to: 'https://github.com/nuxt-ui-templates/chat-vue',
   target: '_blank'
 }], [{
-  label: '退出登录',
+  label: 'Log out',
   icon: 'i-lucide-log-out',
   onSelect() {
     clearSession()

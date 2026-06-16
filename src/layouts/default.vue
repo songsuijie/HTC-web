@@ -32,20 +32,20 @@ const items = computed(() => groups.value?.flatMap((group) => {
     ...item,
     slot: 'chat' as const,
     icon: undefined,
-    class: item.label === '未命名' ? 'text-muted' : ''
+    class: item.label === 'Untitled' ? 'text-muted' : ''
   }))]
 }))
 
 function getChatActions(item: { id: string, label: string }): DropdownMenuItem[][] {
   return [[
     {
-      label: '重命名',
+      label: 'Rename',
       icon: 'i-lucide-pencil',
-      onSelect: () => renameChat(item.id, item.label === '未命名' ? '' : item.label)
+      onSelect: () => renameChat(item.id, item.label === 'Untitled' ? '' : item.label)
     }
   ], [
     {
-      label: '删除',
+      label: 'Delete',
       icon: 'i-lucide-trash',
       color: 'error' as const,
       onSelect: () => deleteChat(item.id)
@@ -80,7 +80,7 @@ defineShortcuts({
             name="i-logos-vue"
             class="h-5 w-auto shrink-0"
           />
-          <span class="text-xl font-bold text-highlighted">AI 助手</span>
+          <span class="text-xl font-bold text-highlighted">Chat</span>
         </ULink>
 
         <UDashboardSidebarCollapse class="ms-auto" />
@@ -89,12 +89,12 @@ defineShortcuts({
       <template #default="{ collapsed }">
         <UNavigationMenu
           :items="[{
-            label: '新建对话',
+            label: 'New chat',
             to: '/',
             kbds: ['meta', 'o'],
             icon: 'i-lucide-circle-plus'
           }, {
-            label: '搜索',
+            label: 'Search',
             icon: 'i-lucide-search',
             kbds: ['meta', 'k'],
             onSelect: () => {
@@ -159,7 +159,7 @@ defineShortcuts({
         />
         <UButton
           v-else
-          :label="collapsed ? '' : '使用 GitHub 登录'"
+          :label="collapsed ? '' : 'Sign in with GitHub'"
           icon="i-simple-icons:github"
           color="neutral"
           variant="ghost"
@@ -171,11 +171,11 @@ defineShortcuts({
 
     <UDashboardSearch
       v-model:open="searchOpen"
-      placeholder="搜索对话..."
+      placeholder="Search chats..."
       :groups="[{
         id: 'links',
         items: [{
-          label: '新建对话',
+          label: 'New chat',
           to: '/',
           icon: 'i-lucide-circle-plus'
         }]

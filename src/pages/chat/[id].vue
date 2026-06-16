@@ -30,7 +30,7 @@ const visibility = ref<'public' | 'private'>(data?.visibility ?? 'private')
 const title = ref<string | null>(data?.title ?? null)
 
 watch(() => chats.value.find(c => c.id === data?.id)?.label, (label) => {
-  if (label && label !== '未命名') {
+  if (label && label !== 'Untitled') {
     title.value = label
   }
 })
@@ -111,7 +111,7 @@ async function saveEdit(message: UIMessage, text: string) {
       })
     } catch {
       toast.add({
-        description: '更新消息失败',
+        description: 'Failed to update message',
         icon: 'i-lucide-alert-circle',
         color: 'error',
       })
@@ -133,7 +133,7 @@ async function regenerateMessage(message: UIMessage) {
       })
     } catch {
       toast.add({
-        description: '重新生成消息失败',
+        description: 'Failed to regenerate message',
         icon: 'i-lucide-alert-circle',
         color: 'error',
       })
@@ -171,7 +171,7 @@ async function vote(message: UIMessage, isUpvoted: boolean) {
   } catch {
     votes.value = snapshot
     toast.add({
-      description: '保存投票失败',
+      description: 'Failed to save vote',
       icon: 'i-lucide-alert-circle',
       color: 'error',
     })
@@ -224,7 +224,7 @@ onMounted(() => {
           <template #indicator>
             <div class="flex items-center gap-1.5">
               <ChatIndicator />
-              <UChatShimmer text="思考中..." class="text-sm" />
+              <UChatShimmer text="Thinking..." class="text-sm" />
             </div>
           </template>
 
@@ -282,11 +282,11 @@ onMounted(() => {
     class="flex-1 flex flex-col gap-4 sm:gap-6"
   >
     <UError
-      :error="{ statusMessage: '对话未找到', statusCode: 404 }"
+      :error="{ statusMessage: 'Chat not found', statusCode: 404 }"
       class="min-h-full"
     >
       <template #links>
-        <UButton to="/" size="lg" label="返回首页" />
+        <UButton to="/" size="lg" label="Go back to home" />
       </template>
     </UError>
   </UContainer>

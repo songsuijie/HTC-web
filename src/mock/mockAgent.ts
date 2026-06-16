@@ -5,10 +5,10 @@ const MOCK_LATENCY_MS = 300
 const STREAM_CHUNK_DELAY_MS = 120
 
 const NORMAL_ANSWER =
-  '这是 Mock Agent 返回的回答。Web Layer MVP 已升级为 TypeScript 全栈架构，集成 AI SDK 流式对话、Nuxt UI 组件库、Nitro 后端和 Drizzle 持久化。当前为 Mock 模式，可输入不同关键词测试各种场景。'
+  'This is a response from the Mock Agent. The Web Layer MVP has been upgraded to a full-stack TypeScript architecture, integrating AI SDK streaming chat, Nuxt UI component library, Nitro backend, and Drizzle ORM persistence. Currently running in Mock mode - try different keywords to test various scenarios.'
 
 const STREAM_ANSWER =
-  '这是 Mock Agent 的流式回答。前端会逐段接收内容并追加到助手消息中，等全部片段返回后再结束 loading 状态。当前为 TypeScript 全栈架构的流式模拟。'
+  'This is a streaming response from the Mock Agent. The frontend receives content in chunks and appends them to the assistant message. Loading ends after all chunks are returned. Currently simulating streaming with the TypeScript full-stack architecture.'
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => {
@@ -33,7 +33,7 @@ function splitAnswer(answer: string): string[] {
   for (const char of answer) {
     buffer += char
 
-    if (/[，。；：、\s]/u.test(char) || buffer.length >= 8) {
+    if (/[,.!?:;\s-]/u.test(char) || buffer.length >= 8) {
       chunks.push(buffer)
       buffer = ''
     }
@@ -67,7 +67,7 @@ export function createMockAssistantMessage(): UIMessage {
 }
 
 export function createNormalResponse(query: string): UIMessage {
-  const isNoLink = query.includes('无链接')
+  const isNoLink = query.includes('no-link')
   const sourceUrl = isNoLink ? '' : 'https://example.com/doc'
 
   return {
@@ -85,7 +85,7 @@ export function createNormalResponse(query: string): UIMessage {
           result: {
             sources: isNoLink ? [] : [{
               url: sourceUrl,
-              title: 'Q1 Web Layer MVP 说明',
+              title: 'Q1 Web Layer MVP Docs',
             }],
           },
         },
@@ -108,29 +108,29 @@ export async function mockSendChatMessage(payload?: { query?: string }): Promise
 
   await delay(MOCK_LATENCY_MS)
 
-  if (query.includes('网络异常')) {
+  if (query.includes('network error')) {
     const error = new Error(getErrorMessage('network_error')) as Error & { status: string; trace_id: string }
     error.status = 'network_error'
     error.trace_id = createTraceId()
     throw error
   }
 
-  if (query.includes('超时')) {
+  if (query.includes('timeout')) {
     const error = new Error(getErrorMessage('timeout_error')) as Error & { status: string; trace_id: string }
     error.status = 'timeout_error'
     error.trace_id = createTraceId()
     throw error
   }
 
-  if (query.includes('无相关')) {
+  if (query.includes('no context')) {
     return createBusinessErrorResponse('no_relevant_context')
   }
 
-  if (query.includes('检索异常')) {
+  if (query.includes('retrieval error')) {
     return createBusinessErrorResponse('retrieval_error')
   }
 
-  if (query.includes('模型异常')) {
+  if (query.includes('model error')) {
     return createBusinessErrorResponse('llm_error')
   }
 
@@ -147,7 +147,7 @@ export async function mockSendChatMessageStream(
   const query = getQuery(payload)
 
   try {
-    if (query.includes('网络异常')) {
+    if (query.includes('network error')) {
       await delay(MOCK_LATENCY_MS)
       const error = new Error(getErrorMessage('network_error')) as Error & { status: string; trace_id: string }
       error.status = 'network_error'
@@ -155,7 +155,7 @@ export async function mockSendChatMessageStream(
       throw error
     }
 
-    if (query.includes('超时')) {
+    if (query.includes('timeout')) {
       await delay(MOCK_LATENCY_MS)
       const error = new Error(getErrorMessage('timeout_error')) as Error & { status: string; trace_id: string }
       error.status = 'timeout_error'
@@ -163,9 +163,9 @@ export async function mockSendChatMessageStream(
       throw error
     }
 
-    if (query.includes('流式异常')) {
+    if (query.includes('stream error')) {
       await delay(STREAM_CHUNK_DELAY_MS)
-      onDelta('正在生成回答，但流式连接发生异常。')
+      onDelta('Generating response, but streaming connection error occurred.')
       await delay(STREAM_CHUNK_DELAY_MS)
       const error = new Error(getErrorMessage('stream_error')) as Error & { status: string; trace_id: string }
       error.status = 'stream_error'
@@ -174,25 +174,25 @@ export async function mockSendChatMessageStream(
     }
 
     // Check business errors before streaming
-    if (query.includes('无相关')) {
+    if (query.includes('no context')) {
       await delay(MOCK_LATENCY_MS)
       onDone(createBusinessErrorResponse('no_relevant_context'))
       return
     }
 
-    if (query.includes('检索异常')) {
+    if (query.includes('retrieval error')) {
       await delay(MOCK_LATENCY_MS)
       onDone(createBusinessErrorResponse('retrieval_error'))
       return
     }
 
-    if (query.includes('模型异常')) {
+    if (query.includes('model error')) {
       await delay(MOCK_LATENCY_MS)
       onDone(createBusinessErrorResponse('llm_error'))
       return
     }
 
-    const answer = query.includes('流式') ? STREAM_ANSWER : NORMAL_ANSWER
+    const answer = query.includes('stream') ? STREAM_ANSWER : NORMAL_ANSWER
     const finalResponse = createNormalResponse(query)
 
     // Override answer in the final response

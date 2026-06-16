@@ -16,13 +16,13 @@ const router = useRouter()
 
 const greeting = computed(() => {
   const hour = new Date().getHours()
-  let timeGreeting = '晚上好'
-  if (hour < 12) timeGreeting = '早上好'
-  else if (hour < 18) timeGreeting = '下午好'
+  let timeGreeting = 'Good evening'
+  if (hour < 12) timeGreeting = 'Good morning'
+  else if (hour < 18) timeGreeting = 'Good afternoon'
 
   const name = user.value?.name?.split(' ')[0] || user.value?.username
 
-  return name ? `${timeGreeting}，${name}` : `${timeGreeting}`
+  return name ? `${timeGreeting}, ${name}` : timeGreeting
 })
 
 async function createChat(prompt: string) {
@@ -39,7 +39,7 @@ async function createChat(prompt: string) {
       router.push(`/chat/${chat.id}`)
     }
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : '创建对话失败'
+    const msg = e instanceof Error ? e.message : 'Failed to create chat'
     console.error('createChat error:', msg)
   } finally {
     loading.value = false
@@ -51,13 +51,13 @@ function onSubmit() {
 }
 
 const quickChats = [
-  { label: '介绍一下你自己', icon: 'i-lucide-bot' },
-  { label: '今天天气怎么样？', icon: 'i-lucide-sun' },
-  { label: '帮我分析一下销售数据', icon: 'i-lucide-line-chart' },
-  { label: '什么是向量数据库？', icon: 'i-lucide-database' },
-  { label: '写一个 Vue 3 组件示例', icon: 'i-logos-vue' },
-  { label: '如何优化 RAG 检索效果？', icon: 'i-lucide-search' },
-  { label: '解释一下 Transformer 架构', icon: 'i-lucide-brain' },
+  { label: 'Introduce yourself', icon: 'i-lucide-bot' },
+  { label: "What's the weather today?", icon: 'i-lucide-sun' },
+  { label: 'Help me analyze sales data', icon: 'i-lucide-line-chart' },
+  { label: 'What is a vector database?', icon: 'i-lucide-database' },
+  { label: 'Write a Vue 3 component example', icon: 'i-logos-vue' },
+  { label: 'How to optimize RAG retrieval?', icon: 'i-lucide-search' },
+  { label: 'Explain the Transformer architecture', icon: 'i-lucide-brain' },
 ]
 </script>
 
@@ -83,7 +83,7 @@ const quickChats = [
           class="[view-transition-name:chat-prompt]"
           variant="subtle"
           :ui="{ base: 'px-1.5' }"
-          placeholder="输入您的问题..."
+          placeholder="Ask me anything..."
           @submit="onSubmit"
         >
           <template #footer>

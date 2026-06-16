@@ -18,7 +18,7 @@ export const useChats = createSharedComposable(() => {
   const fetchChats = async () => {
     chats.value = await $fetch('/api/chats').then((data: ChatData[]) => data.map(chat => ({
       id: chat.id,
-      label: chat.title || '未命名',
+      label: chat.title || 'Untitled',
       to: `/chat/${chat.id}`,
       icon: 'i-lucide-message-circle',
       createdAt: String(chat.createdAt)
@@ -60,7 +60,7 @@ export const useChats = createSharedComposable(() => {
         lastMonth.push(chat)
       } else {
         // Format: "January 2023", "February 2023", etc.
-        const monthYear = chatDate.toLocaleDateString('zh-CN', {
+        const monthYear = chatDate.toLocaleDateString('en-US', {
           month: 'long',
           year: 'numeric'
         })
@@ -91,7 +91,7 @@ export const useChats = createSharedComposable(() => {
     if (today.length) {
       formattedGroups.push({
         id: 'today',
-        label: '今天',
+        label: 'Today',
         items: today
       })
     }
@@ -99,7 +99,7 @@ export const useChats = createSharedComposable(() => {
     if (yesterday.length) {
       formattedGroups.push({
         id: 'yesterday',
-        label: '昨天',
+        label: 'Yesterday',
         items: yesterday
       })
     }
@@ -107,7 +107,7 @@ export const useChats = createSharedComposable(() => {
     if (lastWeek.length) {
       formattedGroups.push({
         id: 'last-week',
-        label: '上周',
+        label: 'Last 7 days',
         items: lastWeek
       })
     }
@@ -115,7 +115,7 @@ export const useChats = createSharedComposable(() => {
     if (lastMonth.length) {
       formattedGroups.push({
         id: 'last-month',
-        label: '上个月',
+        label: 'Last 30 days',
         items: lastMonth
       })
     }

@@ -1,13 +1,13 @@
 export const ERROR_MESSAGES: Record<string, string> = {
   success: '',
-  invalid_query: '请输入有效问题',
-  no_relevant_context: '当前知识库没有足够信息回答该问题',
-  retrieval_error: '检索服务暂时不可用，请稍后重试',
-  llm_error: '模型服务暂时不可用，请稍后重试',
-  network_error: '网络连接异常，请检查服务是否启动',
-  timeout_error: '请求超时，请稍后重试',
-  stream_error: '生成中断，请稍后重试',
-  unknown_error: '服务暂时不可用，请稍后重试',
+  invalid_query: 'Please enter a valid question',
+  no_relevant_context: 'Not enough information in the knowledge base to answer this question',
+  retrieval_error: 'Retrieval service is temporarily unavailable, please try again later',
+  llm_error: 'Model service is temporarily unavailable, please try again later',
+  network_error: 'Network connection error, please check if the service is running',
+  timeout_error: 'Request timed out, please try again later',
+  stream_error: 'Generation interrupted, please try again later',
+  unknown_error: 'Service is temporarily unavailable, please try again later',
 }
 
 export function getErrorMessage(status?: string, fallbackMessage?: string): string {

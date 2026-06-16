@@ -18,8 +18,8 @@ export function useChatActions() {
   const renameModal = overlay.create(ModalRename)
   const deleteModal = overlay.create(ModalConfirm, {
     props: {
-      title: '删除对话',
-      description: '确定要删除该对话？此操作无法撤销。',
+      title: 'Delete chat',
+      description: 'Are you sure you want to delete this chat? This action cannot be undone.',
       color: 'error'
     }
   })
@@ -42,7 +42,7 @@ export function useChatActions() {
       return result
     } catch {
       toast.add({
-        description: '重命名对话失败',
+        description: 'Failed to rename chat',
         icon: 'i-lucide-alert-circle',
         color: 'error'
       })
@@ -64,8 +64,8 @@ export function useChatActions() {
       })
 
       toast.add({
-        title: '对话已删除',
-        description: '您的对话已删除',
+        title: 'Chat deleted',
+        description: 'Your chat has been deleted',
         icon: 'i-lucide-trash'
       })
 
@@ -78,7 +78,7 @@ export function useChatActions() {
       return true
     } catch {
       toast.add({
-        description: '删除对话失败',
+        description: 'Failed to delete chat',
         icon: 'i-lucide-alert-circle',
         color: 'error'
       })

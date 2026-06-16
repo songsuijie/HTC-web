@@ -49,7 +49,7 @@ function copy() {
 
 <template>
   <template v-if="message.role === 'assistant' && !streaming">
-    <UTooltip text="复制回复">
+    <UTooltip text="Copy response">
       <UButton
         size="sm"
         :color="copied ? 'primary' : 'neutral'"
@@ -60,7 +60,7 @@ function copy() {
       />
     </UTooltip>
 
-    <UTooltip text="有帮助">
+    <UTooltip text="Helpful">
       <UButton
         size="sm"
         :color="vote === true ? 'success' : 'neutral'"
@@ -71,7 +71,7 @@ function copy() {
       />
     </UTooltip>
 
-    <UTooltip text="无帮助">
+    <UTooltip text="Not helpful">
       <UButton
         size="sm"
         :color="vote === false ? 'error' : 'neutral'"
@@ -82,7 +82,7 @@ function copy() {
       />
     </UTooltip>
 
-    <UTooltip text="重新生成">
+    <UTooltip text="Regenerate">
       <UButton
         size="sm"
         color="neutral"
