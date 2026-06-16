@@ -23,7 +23,18 @@ const { model } = useModels()
 const { fetchChats, chats } = useChats()
 const { csrf, headerName } = useCsrf()
 
-const data = await $fetch(`/api/chats/${route.params.id}`).catch(() => null)
+const data = await $fetch(`/api/chats/${route.params.id}`).catch((e) => { 
+  console.error('[chat/[id]] fetch failed:', e)
+  return null 
+})
+
+console.log('[chat/[id]] data loaded:', { 
+  hasData: !!data, 
+  msgCount: data?.messages?.length,
+  msgRoles: data?.messages?.map(m => m.role),
+  msgPartsLen: data?.messages?.map(m => m.parts?.length),
+  firstMsgPartType: data?.messages?.[0]?.parts?.[0]?.type,
+})
 
 const isOwner = computed(() => data?.isOwner ?? false)
 const visibility = ref<'public' | 'private'>(data?.visibility ?? 'private')
@@ -214,6 +225,17 @@ onMounted(() => {
 
     <template #body>
       <UContainer class="flex-1 flex flex-col gap-4 sm:gap-6">
+        <!-- DEBUG: Show message count and status -->
+        <div style="background:#ff0;padding:4px 8px;font-size:11px;color:#000;border-radius:4px;position:sticky;top:0;z-index:50">
+          DEBUG: status={{ chat.status }}, messages={{ chat.messages?.length }},
+          data={{ data?.id ? 'hasData' : 'null' }},
+          isMock={{ isMock }}
+          <template v-if="chat.messages?.length">
+            <div v-for="(m,i) in chat.messages" :key="m.id">
+              [{{ i }}] {{ m.role }}: parts={{ m.parts?.length }}, text="{{ m.parts?.[0]?.text?.substring(0,50) || '---' }}"
+            </div>
+          </template>
+        </div>
         <UChatMessages
           should-auto-scroll
           :messages="chat.messages"

@@ -23,7 +23,15 @@ export function useMockChat(options: MockChatOptions = {}) {
   const status = ref<'ready' | 'submitted' | 'streaming' | 'error'>('ready')
   const error = ref<Error | undefined>(undefined)
 
+  console.log('[useMockChat] INIT:', {
+    id: options.id,
+    msgCount: options.messages?.length,
+    msgRoles: options.messages?.map(m => m.role),
+    initialPartsLen: options.messages?.map(m => m.parts?.length),
+  })
+
   async function sendMessage(params: { text: string; messageId?: string }) {
+    console.log('[useMockChat] sendMessage called:', { text: params.text, status: status.value })
     if (status.value === 'streaming') return
 
     status.value = 'submitted'
@@ -32,6 +40,7 @@ export function useMockChat(options: MockChatOptions = {}) {
     const userMsg = createMockUserMessage(params.text)
     const assistantMsg = createMockAssistantMessage()
     messages.value = [...messages.value, userMsg, assistantMsg]
+    console.log('[useMockChat] added messages, count:', messages.value.length, 'userParts:', userMsg.parts?.length, 'asstParts:', assistantMsg.parts?.length)
 
     status.value = 'streaming'
 
@@ -52,10 +61,12 @@ export function useMockChat(options: MockChatOptions = {}) {
               parts: [{ type: 'text' as const, text: newText }],
             },
           ]
+          if (messages.value.length <= 3) console.log('[useMockChat] onDelta updated msg, partsLen:', messages.value[lastIdx]?.parts?.length)
         }
       },
       // onDone
       (finalMsg: UIMessage) => {
+        console.log('[useMockChat] onDone called')
         const msgs = messages.value
         const lastIdx = msgs.length - 1
         if (lastIdx >= 0 && msgs[lastIdx]!.role === 'assistant') {
@@ -68,6 +79,7 @@ export function useMockChat(options: MockChatOptions = {}) {
               parts: [{ type: 'text' as const, text: finalText }],
             },
           ]
+          console.log('[useMockChat] onDone final msg parts len:', messages.value[lastIdx]?.parts?.length, 'text preview:', finalText.substring(0, 50))
         }
         status.value = 'ready'
       },
