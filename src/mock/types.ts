@@ -1,4 +1,4 @@
-import type { UIMessage, UITools } from 'ai'
+import type { UIMessage } from 'ai'
 
 export interface ChatLike {
   messages: { value: UIMessage[] } | UIMessage[]

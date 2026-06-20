@@ -13,6 +13,7 @@ const { user } = useUserSession()
 const input = ref('')
 const loading = ref(false)
 const router = useRouter()
+const isMock = import.meta.env.VITE_USE_MOCK !== 'false'
 
 const greeting = computed(() => {
   const hour = new Date().getHours()
@@ -30,6 +31,14 @@ async function createChat(prompt: string) {
   input.value = ''
   loading.value = true
   try {
+    if (!isMock) {
+      router.push({
+        path: '/chat/local-session-001',
+        query: { prompt },
+      })
+      return
+    }
+
     const chat = await $fetch('/api/chats', {
       method: 'POST',
       headers: { [headerName]: csrf() },
@@ -91,7 +100,10 @@ const quickChats = [
         >
           <template #footer>
             <ModelSelect />
-            <UChatPromptSubmit color="neutral" size="sm" />
+            <UChatPromptSubmit
+              color="neutral"
+              size="sm"
+            />
           </template>
         </UChatPrompt>
 

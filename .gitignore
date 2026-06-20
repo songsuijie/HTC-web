@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+target/
 *.local
 .nuxt
 
@@ -43,6 +44,9 @@ tsconfig.node.tsbuildinfo
 
 # Vite cache
 .vite/
+
+# Local old project copy
+HTC-web/
 
 # Playwright
 .playwright-cli/
